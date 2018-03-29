@@ -1,0 +1,29 @@
+<mat-sidenav-container style="height:100%">
+  <mat-sidenav #sidenav mode="over" opened="false">
+    <side-nav-menu title='Back' [sidenav]="sidenav">
+      <side-nav-item route="/main" title="Home" icon="home" [disabled]="state.disabled['home']"></side-nav-item>
+      <side-nav-item route="/dashboard" title="Dashboard" icon="dashboard" [style.color]="state.disabled['dashboard'] ? '#aaa' : '#000000'" [disabled]="state.disabled['dashboard']"></side-nav-item>
+      <side-nav-x-group title="Detail Overview">
+        <side-nav-item route="/nodes" title="Nodes" icon="list" [style.color]="state.disabled['nodes'] ? '#aaa' : '#000000'" [disabled]="state.disabled['nodes']"></side-nav-item>
+        <side-nav-item route="/pods" title="Pods" icon="list" [style.color]="state.disabled['pods'] ? '#aaa' : '#000000'" [disabled]="state.disabled['pods']"></side-nav-item>
+      </side-nav-x-group>
+      <side-nav-group>
+        <side-nav-item route="/config" title="Configuration" icon="build" [style.color]="state.disabled['config'] ? '#aaa' : '#000000'" [disabled]="state.disabled['config']"></side-nav-item>
+      </side-nav-group>
+      <side-nav-x-group title="Charts">
+        <side-nav-item route="/page/chart1" icon="bar_chart" title="Chart 1.1" [style.color]="state.disabled['chart1'] ? '#aaa' : '#000000'" [disabled]="state.disabled['page51']"></side-nav-item>
+        <side-nav-item route="/page/chart2" icon="history" title="Chart 1.2" [style.color]="state.disabled['chart2'] ? '#aaa' : '#000000'" [disabled]="state.disabled['page52']"></side-nav-item>
+      </side-nav-x-group>
+    </side-nav-menu>
+  </mat-sidenav>
+
+  <mat-toolbar color="primary">
+    <button mat-icon-button (click)="sidenav.toggle(); menuDisabled()"><mat-icon>menu</mat-icon></button>
+    <span>Kubernetes Admin</span>
+  </mat-toolbar>
+
+  <div style="text-align:center;width:100%">
+    <router-outlet></router-outlet>
+  </div>
+
+</mat-sidenav-container>

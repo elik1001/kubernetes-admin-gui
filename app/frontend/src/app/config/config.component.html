@@ -1,0 +1,129 @@
+<form #frm="ngForm" (ngSubmit)="addServer(frm)" *ngIf="!toggleForm">
+  <br>
+  <div fxLayout="row" class="">
+    <div class="" fxFlex="3%"></div>
+    <div class="" fxFlex="77%">
+      <div class="alert alert-primary">
+        <div fxFlex="10%"></div>
+        <div  class="text-left" fxFlex="90%" fxFlexAlign="start" fxLayoutAlign="start center">
+          <h5>Please add at least one Kubernetes Master API IP Address.</h5>
+        </div>
+      </div>
+    </div>
+    <div class="" fxFlex="20%"></div>
+  </div>
+
+  <div fxLayout="row" class="" fxFlexAlign="end" fxLayoutAlign="space-evenly center">
+    <div class="" fxFlex="12%"></div>
+    <div class="" fxFlex="17%" fxFlexAlign="start" fxLayoutAlign="start center">
+      <mat-form-field>
+        <input type="text" placeholder="Master Name" required id="serverName" matInput ngModel name="serverName">
+      </mat-form-field>
+    </div>
+    <div class="" fxFlex="17%" fxFlexAlign="start" fxLayoutAlign="start center">
+      <mat-form-field>
+        <input type="text" placeholder="API Address" required id="serverIp" matInput ngModel name="serverIp" pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$">
+        <!--<mat-icon matPrefix>build</mat-icon>-->
+      </mat-form-field>
+    </div>
+    <div class="" fxFlex="54%"></div>
+  </div>
+
+  <div fxLayout="row" class="" fxFlexAlign="start" fxLayoutAlign="space-evenly center">
+    <div class="" fxFlex="12%"></div>
+    <div class="" fxFlex fxFlexAlign="start" fxLayoutAlign="start center">
+      <button type="submit" name="button" class="btn btn-outline-success" [disabled]=frm.invalid>Add Master Server</button>
+    </div>
+  </div>
+
+  <br>
+  <hr>
+
+  <div fxLayout="row" class="" fxFlexAlign="end" fxLayoutAlign="start center">
+    <div class="" fxFlex="5%"></div>
+    <div class="" fxFlex="85%">
+      <mat-list>
+        <mat-list-item>
+          <div class="" fxFlex="25%" fxFlexAlign="end">
+            <span><b>Master Server</b></span>
+          </div>
+          <div class="" fxFlex="5%"></div>
+          <div class="" fxFlex="20%" fxFlexAlign="end">
+            <span><b>IP Address</b></span>
+          </div>
+          <div class="" fxFlex="50%">
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <div class="" fxFlex="10%"></div>
+  </div>
+
+  <div fxLayout="row" class="" fxLayoutAlign="start center" fxFlexAlign="end">
+    <div class="" fxFlex="5%"></div>
+    <div class="" fxFlex="85%">
+      <hr>
+      <mat-list>
+        <mat-list-item *ngFor="let server of serverList">
+          <div class="" fxFlexAlign="end" fxFlex="25%">
+            <span>{{server.serverName}}<hr></span>
+          </div>
+          <div class="" fxFlex="5%"></div>
+          <div class="" fxFlexAlign="end" fxFlex="20%">
+            <p>{{server.serverIp}}</p>
+            <hr>
+          </div>
+
+          <div class="" fxFlex="14%">
+            <p>
+              <button type="button" name="button" class="btn btn-outline-success btn-sm" (click)="showEditForm(server)" [disabled]="toggleForm"><span><i fa class="fa fa-pencil"></i></span></button>
+              <button type="button" name="button" class="btn btn-outline-danger btn-sm" (click)="deleteServer(server._id)" [disabled]="toggleForm"><span><i fa class="fa fa-trash"></i></span></button>
+            </p>
+          </div>
+          <div class="" fxFlex="36%">
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <div class="" fxFlex="10%"></div>
+  </div>
+</form>
+
+<form #editForm="ngForm" (ngSubmit)="editServer(editForm)" *ngIf="toggleForm">
+  <br>
+  <div fxLayout="row" class="">
+    <div class="" fxFlex="3%"></div>
+    <div class="" fxFlex="77%">
+      <div class="alert alert-primary">
+        <div fxFlex="10%"></div>
+        <div  class="text-left" fxFlex="90%" fxFlexAlign="start" fxLayoutAlign="start center">
+          <h5>Update the Kubernetes Master API IP Address.</h5>
+        </div>
+      </div>
+    </div>
+    <div class="" fxFlex="20%"></div>
+  </div>
+
+  <div fxLayout="row" class="" fxFlexAlign="end" fxLayoutAlign="space-evenly center">
+    <div class="" fxFlex="12%"></div>
+    <div class="" fxFlex="17%" fxFlexAlign="start" fxLayoutAlign="start center">
+      <mat-form-field>
+        <input type="text" placeholder="Master Name" required id="serverName" matInput [ngModel]="selectServer.serverName" name="serverName">
+      </mat-form-field>
+    </div>
+    <div class="" fxFlex="17%" fxFlexAlign="start" fxLayoutAlign="start center">
+      <mat-form-field>
+        <input type="text" placeholder="API Address" required id="serverIp" matInput [ngModel]="selectServer.serverIp" name="serverIp" pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$">
+      </mat-form-field>
+    </div>
+    <div class="" fxFlex="54%"></div>
+  </div>
+
+  <div fxLayout="row">
+    <div class="" fxFlex="12%"></div>
+    <div class="" fxFlex fxFlexAlign="start" fxLayoutAlign="start center">
+      <button class="btn btn-outline-success" [disabled]=editForm.invalid>Save</button>
+    </div>
+  </div>
+
+</form>

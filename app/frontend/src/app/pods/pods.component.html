@@ -1,0 +1,80 @@
+<mat-grid-list cols="2" rowHeight="75px">
+  <div>
+    <mat-grid-tile>
+      <div class="text-inside-left-grid">
+        <mat-form-field class="example-header">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </div>
+  <div>
+    <mat-grid-tile>
+      <div class="text-inside-right-grid">
+        <mat-form-field class="example-header">
+          <input matInput type="number" placeholder="0" value="0" required id="refreshTime" (focusout)="updateRefreshTime($event.target.value)" ngModel name="refreshTime">
+          <mat-hint align="start">Refresh Time (Sec)</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </div>
+</mat-grid-list>
+
+<div class="example-container mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+    </ng-container>
+
+    <!-- fullNodeName Column -->
+    <ng-container matColumnDef="fullNodeName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Node Name </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.fullNodeName}} </mat-cell>
+    </ng-container>
+
+    <!-- podName Column -->
+    <ng-container matColumnDef="podName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Pod Name </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.podName}} </mat-cell>
+    </ng-container>
+
+    <!-- hostIP Column -->
+    <ng-container matColumnDef="hostIP">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Node IP </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.hostIP}} </mat-cell>
+    </ng-container>
+
+    <!-- podIP Column -->
+    <ng-container matColumnDef="podIP">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Pod IP </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.podIP}} </mat-cell>
+    </ng-container>
+
+    <!-- nodeName Column -->
+    <ng-container matColumnDef="nodeName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Node Name </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.nodeName}} </mat-cell>
+    </ng-container>
+
+    <!-- podNamespace Column -->
+    <ng-container matColumnDef="podNamespace">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Namespace </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.podNamespace}} </mat-cell>
+    </ng-container>
+
+    <!-- podStatus Column -->
+    <ng-container matColumnDef="podStatus">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+      <mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.podStatus}} </mat-cell>
+    </ng-container>
+
+    <!-- Header -->
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+</div>

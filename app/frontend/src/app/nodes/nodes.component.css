@@ -1,0 +1,42 @@
+.text-inside-left-grid {
+  position: absolute;
+  left: 30px;
+}
+
+.text-inside-right-grid {
+  position: absolute;
+  right: 30px;
+}
+
+.example-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+
+.example-header {
+  min-height: 64px;
+  padding: 8px 24px 0;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 500px;
+}
+
+.mat-column-id {
+  flex: 0 0 20px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.mat-column-InternalIP, .mat-column-Hostname, .mat-column-nodeRole, .mat-column-OS, .mat-column-Arch,
+.mat-column-podCIDR, .mat-column-nodeStatus {
+  display: flex;
+  justify-content: center;
+}

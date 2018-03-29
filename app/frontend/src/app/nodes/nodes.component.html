@@ -1,0 +1,80 @@
+<mat-grid-list cols="2" rowHeight="75px">
+  <div>
+    <mat-grid-tile>
+      <div class="text-inside-left-grid">
+        <mat-form-field class="example-header">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </div>
+  <div>
+    <mat-grid-tile>
+      <div class="text-inside-right-grid">
+        <mat-form-field class="example-header">
+          <input matInput type="number" placeholder="0" value="0" required id="refreshTime" (focusout)="updateRefreshTime($event.target.value)" ngModel name="refreshTime">
+          <mat-hint align="start">Refresh Time (Sec)</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </div>
+</mat-grid-list>
+
+<div class="example-container mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+    </ng-container>
+
+    <!-- Hostname Column -->
+    <ng-container matColumnDef="Hostname">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Hostname </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.Hostname}} </mat-cell>
+    </ng-container>
+
+    <!-- InternalIP Column -->
+    <ng-container matColumnDef="InternalIP">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Internal IP </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.InternalIP}} </mat-cell>
+    </ng-container>
+
+    <!-- nodeRole Column -->
+    <ng-container matColumnDef="nodeRole">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> nodeRole </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.nodeRole}} </mat-cell>
+    </ng-container>
+
+    <!-- OS Column -->
+    <ng-container matColumnDef="OS">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> OS </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.OS}} </mat-cell>
+    </ng-container>
+
+    <!-- podCIDR Column -->
+    <ng-container matColumnDef="podCIDR">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Pod CIDR </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.podCIDR}} </mat-cell>
+    </ng-container>
+
+    <!-- Arch Column -->
+    <ng-container matColumnDef="Arch">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Arch </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.Arch}} </mat-cell>
+    </ng-container>
+
+    <!-- nodeStatus Column -->
+    <ng-container matColumnDef="nodeStatus">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+      <mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.nodeStatus}} </mat-cell>
+    </ng-container>
+
+    <!-- Header -->
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-paginator [pageSizeOptions]="[6, 12, 18]"></mat-paginator>
+</div>
