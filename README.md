@@ -5,10 +5,8 @@ Kubernetes Admin GUI
 This repository contains a Web GUI/UI to administrator a Kubernetes cluster.
 
 <h4>Versions</h4>
-
-<b>Version 0.1</b>
-<br>
-Initial Release
+The current version is <b>Version 0.2</b>.
+<br>The version history and change log is available <a href="VERSION.md">here</a>.
 <br>
 <h3>Getting Started</h3>
 
@@ -62,15 +60,15 @@ In the web GUI/UI click on configure, add you master hostname and IP address
 <p>Add master API IP addrees 
 <br><img src="images/kub-admin-master-config.png" alt="kubernetes configuration" align="middle" height="50%"></p>
 
-<b>Check your Node status</b>
+<b>Administrate Nodes and check status</b>
 <p>Node status
 <br><img src="images/kub-admin-node-stat.png" alt="kubernetes node status" align="middle" height="50%"></p>
 
-<b>Check your Pod status</b>
+<b>Administrate Pods and check status</b>
 <p>Pod status
 <br><img src="images/kub-admin-pod-stat.png" alt="kubernetes pod status" align="middle" height="50%"></p>
 
-<b>Check your Admin GUI/Admin</b>
+<b>Admin Menu GUI/Admin</b>
 <p>Admin menu
 <br><img src="images/kub-admin-menu.png" alt="kubernetes admin menu" align="middle" height="50%"></p>
 

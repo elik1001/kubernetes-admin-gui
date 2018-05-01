@@ -13,6 +13,11 @@
       <div class="text-inside-right-grid">
         <mat-form-field class="example-header">
           <input matInput type="number" placeholder="0" value="0" required id="refreshTime" (focusout)="updateRefreshTime($event.target.value)" ngModel name="refreshTime">
+          <button mat-icon-button matSuffix (click)="getData()">
+            <mat-icon color="primary">
+              refresh
+            </mat-icon>
+          </button>
           <mat-hint align="start">Refresh Time (Sec)</mat-hint>
         </mat-form-field>
       </div>
@@ -20,61 +25,140 @@
   </div>
 </mat-grid-list>
 
+<br>
+
 <div class="example-container mat-elevation-z8">
   <mat-table #table [dataSource]="dataSource" matSort>
 
     <!-- Id Column -->
     <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+      <mat-cell *matCellDef="let element; let i=index;">
+        <mat-icon>{{expandIcon}}</mat-icon>
+      </mat-cell>
     </ng-container>
+
+    <!-- Id Column -->
 
     <!-- Hostname Column -->
     <ng-container matColumnDef="Hostname">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Hostname </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.Hostname}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Hostname}} </mat-cell>
     </ng-container>
 
     <!-- InternalIP Column -->
     <ng-container matColumnDef="InternalIP">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Internal IP </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.InternalIP}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.InternalIP}} </mat-cell>
     </ng-container>
 
     <!-- nodeRole Column -->
     <ng-container matColumnDef="nodeRole">
       <mat-header-cell *matHeaderCellDef mat-sort-header> nodeRole </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.nodeRole}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.nodeRole}} </mat-cell>
     </ng-container>
 
     <!-- OS Column -->
     <ng-container matColumnDef="OS">
       <mat-header-cell *matHeaderCellDef mat-sort-header> OS </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.OS}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.OS}} </mat-cell>
     </ng-container>
 
     <!-- podCIDR Column -->
     <ng-container matColumnDef="podCIDR">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Pod CIDR </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.podCIDR}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.podCIDR}} </mat-cell>
     </ng-container>
 
     <!-- Arch Column -->
     <ng-container matColumnDef="Arch">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Arch </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.Arch}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Arch}} </mat-cell>
     </ng-container>
 
     <!-- nodeStatus Column -->
     <ng-container matColumnDef="nodeStatus">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
-      <mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.nodeStatus}} </mat-cell>
+      <mat-cell *matCellDef="let element" [style.color]="element.color"> {{element.nodeStatus}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="buttons">
+      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+      <mat-cell *matCellDef="let row; let i=index;" (click)="$event.stopPropagation()">
+        <button mat-button [matMenuTriggerFor]="menu"><mat-icon name="edit" aria-label="Edit">more_vert</mat-icon></button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="nodeEdit(i, row)">
+            <mat-icon color="primary" name="edit" aria-label="Edit">
+              edit
+            </mat-icon>
+            <span>Edit</span>
+          </button>
+          <button mat-menu-item (click)="deleteNode(row.Hostname)">
+            <mat-icon color="warn" name="delete" aria-label="Delete">
+              delete_forever
+            </mat-icon>
+              <span>Delete</span>
+            </button>
+        </mat-menu>
+
+      </mat-cell>
     </ng-container>
 
     <!-- Header -->
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple class="element-row" [cdkDetailRow]="row" [cdkDetailRowTpl]="tpl" (toggleChange)="onToggleChange($event)">
+    </mat-row>
+
   </mat-table>
 
   <mat-paginator [pageSizeOptions]="[6, 12, 18]"></mat-paginator>
 </div>
+
+<ng-template #tpl let-element>
+  <div class="mat-row" [@detailExpand] style="overflow: hidden">
+    <div fxLayout="column">
+      <p fxFlex="20" fxLayoutAlign="start center" fxLayoutGap="2px">
+        <mat-icon color="primary">memory</mat-icon>
+        <span flex></span>
+        <span><b> Memory Availability:</b></span>
+      </p>
+      <p fxFlex="20" fxLayoutAlign="start center" fxLayoutGap="2px">
+        <span>
+          <ul>
+        <li><span fxLayoutAlign="start"><b>Stat Type: </b>&nbsp; {{element.memoryPressureType}}</span></li>
+        <li><span fxLayoutAlign="start"><b>Status: </b>&nbsp; {{element.memoryPressureStatus}}</span></li>
+        <li><span fxLayoutAlign="start"><b>Status Reason: </b>&nbsp; {{element.memoryPressureReason}}</span></li>
+        </ul>
+        </span>
+      </p>
+      <p fxFlex="20" fxLayoutAlign="start center" fxLayoutGap="2px">
+        <mat-icon color="primary">storage</mat-icon>
+        <span flex></span>
+        <span><b> Disk Availability:</b></span>
+      </p>
+      <p fxFlex="20" fxLayoutAlign="start center" fxLayoutGap="2px">
+        <span>
+          <ul>
+        <li><span fxLayoutAlign="start"><b>Stat Type: </b>&nbsp; {{element.diskPressureType}}</span></li>
+        <li><span fxLayoutAlign="start"><b>Status: </b>&nbsp; {{element.diskPressureStatus}}</span></li>
+        <li><span fxLayoutAlign="start"><b>Status Reason: </b>&nbsp; {{element.diskPressureReason}}</span></li>
+        </ul>
+        </span>
+      </p>
+      <p fxFlex="20" fxLayoutAlign="start center" fxLayoutGap="2px">
+        <mat-icon color="primary">storage</mat-icon>
+        <span flex></span>
+        <span><b> Disk Space Availability:</b></span>
+      </p>
+      <p fxFlex="20" fxLayoutAlign="start center" fxLayoutGap="2px">
+        <span>
+          <ul>
+        <li><span fxLayoutAlign="start"><b>Stat Type: </b>&nbsp; {{element.outOfDiskType}}</span></li>
+        <li><span fxLayoutAlign="start"><b>Status: </b>&nbsp; {{element.outOfDiskStatus}}</span></li>
+        <li><span fxLayoutAlign="start"><b>Status Reason: </b>&nbsp; {{element.outOfDiskReason}}</span></li>
+        </ul>
+        </span>
+      </p>
+    </div>
+  </div>
+</ng-template>
