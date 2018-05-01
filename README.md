@@ -6,7 +6,7 @@ This repository contains a Web GUI/UI to administrator a Kubernetes cluster.
 
 <h4>Versions</h4>
 The current version is <b>Version 0.2</b>.
-The version history and change log is available <a href="VERSION.md">here</a>.
+<br>The version history and change log is available <a href="VERSION.md">here</a>.
 <br>
 <h3>Getting Started</h3>
 
