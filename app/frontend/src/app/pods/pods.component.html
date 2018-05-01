@@ -12,7 +12,12 @@
     <mat-grid-tile>
       <div class="text-inside-right-grid">
         <mat-form-field class="example-header">
-          <input matInput type="number" placeholder="0" value="0" required id="refreshTime" (focusout)="updateRefreshTime($event.target.value)" ngModel name="refreshTime">
+          <input matInput type="number" placeholder="0" value="0" id="refreshTime" (focusout)="updateRefreshTime($event.target.value)" ngModel name="refreshTime">
+          <button mat-icon-button matSuffix (click)="getData()">
+            <mat-icon color="primary">
+              refresh
+            </mat-icon>
+          </button>
           <mat-hint align="start">Refresh Time (Sec)</mat-hint>
         </mat-form-field>
       </div>
@@ -23,58 +28,133 @@
 <div class="example-container mat-elevation-z8">
   <mat-table #table [dataSource]="dataSource" matSort>
 
-    <!-- Id Column -->
     <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+      <mat-cell *matCellDef="let element; let i=index;">
+        <mat-icon>{{expandIcon}}</mat-icon>
+      </mat-cell>
     </ng-container>
 
     <!-- fullNodeName Column -->
     <ng-container matColumnDef="fullNodeName">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Node Name </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.fullNodeName}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.fullNodeName}} </mat-cell>
     </ng-container>
 
     <!-- podName Column -->
     <ng-container matColumnDef="podName">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Pod Name </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.podName}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.podName}} </mat-cell>
     </ng-container>
 
     <!-- hostIP Column -->
     <ng-container matColumnDef="hostIP">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Node IP </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.hostIP}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.hostIP}} </mat-cell>
     </ng-container>
 
     <!-- podIP Column -->
     <ng-container matColumnDef="podIP">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Pod IP </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.podIP}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.podIP}} </mat-cell>
     </ng-container>
 
     <!-- nodeName Column -->
     <ng-container matColumnDef="nodeName">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Node Name </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.nodeName}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.nodeName}} </mat-cell>
     </ng-container>
 
     <!-- podNamespace Column -->
     <ng-container matColumnDef="podNamespace">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Namespace </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.podNamespace}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.podNamespace}} </mat-cell>
     </ng-container>
 
     <!-- podStatus Column -->
     <ng-container matColumnDef="podStatus">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
-      <mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.podStatus}} </mat-cell>
+      <mat-cell *matCellDef="let element" [style.color]="element.color"> {{element.podStatus}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="buttons">
+      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+      <mat-cell *matCellDef="let row; let i=index;" (click)="$event.stopPropagation()">
+        <button mat-button [matMenuTriggerFor]="menu"><mat-icon name="edit" aria-label="Edit">more_vert</mat-icon></button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="podEdit(i, row)">
+            <mat-icon color="primary" name="edit" aria-label="Edit">
+              edit
+            </mat-icon>
+            <span>Edit</span>
+          </button>
+          <button mat-menu-item (click)="deletePod(row.fullNodeName)">
+            <mat-icon color="warn" name="delete" aria-label="Delete">
+              delete_forever
+            </mat-icon>
+              <span>Delete</span>
+            </button>
+        </mat-menu>
+
+        <!--<button mat-icon-button color="accent" (click)="startEdit(i, row.id, row.title, row.state, row.url, row.created_at, row.updated_at)">-->
+        <!--
+        <button mat-icon-button color="primary" (click)="startEdit(i, row)">
+          <mat-icon name="edit" aria-label="Edit">edit</mat-icon>
+        </button>
+        -->
+        <!--<button mat-icon-button color="accent" (click)="deleteItem(i, row.id, row.title, row.state, row.url)">-->
+        <!--
+        <button mat-icon-button color="warn" (click)="deletePod(row.fullNodeName)">
+          <mat-icon name="delete" aria-label="Delete">delete_forever</mat-icon>
+        </button>
+        -->
+      </mat-cell>
     </ng-container>
 
     <!-- Header -->
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple class="element-row" [cdkDetailRow]="row" [cdkDetailRowTpl]="tpl" (toggleChange)="onToggleChange($event)">
+    </mat-row>
+
   </mat-table>
 
   <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
 </div>
+
+<ng-template #tpl let-element>
+  <div class="mat-row" [@detailExpand] style="overflow: hidden">
+    <div fxLayout="column">
+      <p fxFlex="20" fxLayoutAlign="start center" fxLayoutGap="2px">
+        <mat-icon color="primary">perm_identity</mat-icon>
+        <span flex></span>
+        <span><b> ID:</b> {{element.id}}</span>
+      </p>
+      <p fxFlex="20" fxLayoutAlign="start center" fxLayoutGap="2px">
+        <mat-icon color="primary">settings_ethernet</mat-icon>
+        <span flex></span>
+        <span><b> IP Address:</b> {{element.hostIP}}</span>
+      </p>
+      <p fxFlex="20" fxLayoutAlign="start center" fxLayoutGap="2px">
+        <mat-icon color="primary">computer</mat-icon>
+        <span flex></span>
+        <span><b> Image:</b> {{element.fullNodeName}}</span>
+      </p>
+      <p fxFlex="20" fxLayoutAlign="start center" fxLayoutGap="2px">
+        <mat-icon color="primary">library_books</mat-icon>
+        <span flex></span>
+        <span><b> Image Details:</b></span>
+      </p>
+      <p fxFlex="20" fxLayoutAlign="start center" fxLayoutGap="2px">
+        <span>
+          <ul>
+            <li><span fxLayoutAlign="start"><b>Image Name: </b>&nbsp; {{element.podImageName}}</span></li>
+        <li><span fxLayoutAlign="start"><b>Container ID: </b>&nbsp; {{element.podContainerID}}</span></li>
+        <li><span fxLayoutAlign="start"><b>Image ID: </b>&nbsp; {{element.podImageID}}</span></li>
+        <li><span fxLayoutAlign="start"><b>Image State: </b>&nbsp; {{element.podPhase}}</span></li>
+        <li><span fxLayoutAlign="start"><b>Image Restart Count: </b>&nbsp; {{element.podRestartCount}}</span></li>
+        </ul>
+        </span>
+      </p>
+    </div>
+  </div>
+</ng-template>

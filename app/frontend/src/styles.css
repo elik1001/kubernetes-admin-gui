@@ -28,3 +28,28 @@ a.mat-menu-item>mat-icon {
   height: 24px;
   width: 24px;
 }
+/* snakBar Panel color */
+.mat-snack-bar-container.snack-background-green {
+  background-color: rgb(21, 162, 21);
+}
+
+.mat-snack-bar-container.snack-background-red {
+  background-color: rgb(187, 34, 54);
+  color: white;
+  font-weight: bold;
+}
+
+/*
+.side-nav-item-active {
+  background: #ddd
+}
+
+.side-nav-item-disabled {
+  all: initial;
+  color: #aaa
+}
+/*
+.side-nav-item:hover {
+  background: #f0f0f0;
+}
+*/
